@@ -1,5 +1,6 @@
 
 
+from urllib import request
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
@@ -7,6 +8,13 @@ from rest_framework import status
 from .import serializers
 import secrets
 from django.core.mail import send_mail # for email
+from django.conf import settings
+from django.shortcuts import render,get_object_or_404
+from .serializers import UserAccountVerificationSerializer
+
+from django.contrib.auth import get_user_model
+User=get_user_model()
+
 
 # Create your views here.
 
@@ -53,3 +61,15 @@ class UserCreateView(generics.GenericAPIView):
             return Response(data=serializer.data,status= status.HTTP_201_CREATED  )
         
         return  Response(data=serializer._errors,status=  status.HTTP_400_BAD_REQUEST)
+
+class AccountVerificationView(generics.GenericAPIView):  
+    serializer_class= UserAccountVerificationSerializer
+
+    def  get (self,request):
+        user = get_object_or_404(User,email = request.data['email'])   
+       
+        print(user)
+        serializer = self.serializer_class(instance=user)
+  
+
+        return  Response(data=serializer.data,status=status.HTTP_200_OK)

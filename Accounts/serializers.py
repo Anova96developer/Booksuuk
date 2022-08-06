@@ -50,3 +50,14 @@ class UserCreationSerializer(serializers.ModelSerializer):
         user.save()
         
         return user
+
+
+class UserAccountVerificationSerializer(serializers.ModelSerializer):
+    password  = serializers.CharField(min_length = 8,write_only=True)
+
+    class Meta:
+          model= User
+          fields =['username','email','password','token','is_verified']
+
+    
+    
