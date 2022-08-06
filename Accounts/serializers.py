@@ -50,4 +50,6 @@ class UserCreationSerializer(serializers.ModelSerializer):
         user.save()
         
         return user
-            
+
+
+# class UserAccountVerificationSerializer(serializers.ModelSerializer)
