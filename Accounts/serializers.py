@@ -59,5 +59,15 @@ class UserAccountVerificationSerializer(serializers.ModelSerializer):
           model= User
           fields =['username','email','password','token','is_verified']
 
+
+class loginSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model= User
+        fields =['username','email','is_verified']
+    
+
+
+
     
     
