@@ -65,10 +65,10 @@ class UserCreateView(generics.GenericAPIView):
 class AccountVerificationView(generics.GenericAPIView):  
     serializer_class= UserAccountVerificationSerializer
 
-    def  get (self,request):
+    def  put (self,request):
         user = get_object_or_404(User,email = request.data['email'])   
        
-        print(user)
+        print(user['token'])
         serializer = self.serializer_class(instance=user)
   
 
