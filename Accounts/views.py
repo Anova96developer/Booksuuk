@@ -1,5 +1,6 @@
 
 
+import email
 from urllib import request
 from django.shortcuts import render
 from rest_framework import generics
@@ -66,10 +67,15 @@ class AccountVerificationView(generics.GenericAPIView):
     serializer_class= UserAccountVerificationSerializer
 
     def  put (self,request):
-        user = get_object_or_404(User,email = request.data['email'])   
+        user  = get_object_or_404(User,email = request.data['email'])
        
-        print(user['token'])
-        serializer = self.serializer_class(instance=user)
-  
+        # print(user.token) 
+        if (user.token == request.data['token']):
+     
+             user.is_verified =   True
+             user.save()
 
-        return  Response(data=serializer.data,status=status.HTTP_200_OK)
+             serializer = self.serializer_class(instance=user)
+             return  Response(data=serializer.data,status=status.HTTP_200_OK)
+
+        return  Response(data={'message':'verification failed'},status=  status.HTTP_400_BAD_REQUEST)
