@@ -19,6 +19,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
     class Meta:
         model= User
         fields =['username','email','password','first_name','last_name','address','phone_number','token','is_verified','date_joined']
+        read_only_fields= ['token','is_verified','date_joined']
     
     
     
@@ -33,10 +34,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
         if email_exists:
             raise serializers.ValidationError("User with email exists")
         
-        token_exists =User.objects.filter(token=attrs['token']).exists()
-        
-        if token_exists:
-            raise serializers.ValidationError("User with token exists")
+       
         
         phone_number_exists =User.objects.filter(phone_number=attrs['phone_number']).exists()
         
@@ -49,19 +47,14 @@ class UserCreationSerializer(serializers.ModelSerializer):
     
     
     def create(self, validated_data):
-        user = User.objects.create(
-            username = validated_data['username'],
-            email=validated_data['email'],
-            token= validated_data['token'],
-            first_name =validated_data['first_name'],
-            last_name = validated_data['last_name'],
-            address = validated_data['address'],
-            phone_number = validated_data['phone_number'],
+
+        password = validated_data.pop('password')
+
+        user =  super().create(validated_data)
             
 
-        )
+        user.set_password(password)  
             
-        user.set_password(validated_data['password'])      
         
         user.save()
         
@@ -77,10 +70,10 @@ class UserAccountVerificationSerializer(serializers.ModelSerializer):
 
 
 class loginSerializer(serializers.ModelSerializer):
-    
+    password  = serializers.CharField(min_length = 8,write_only=True)
     class Meta:
         model= User
-        fields =['username','email','is_verified']
+        fields =['username','password','email','is_verified']
     
 
 

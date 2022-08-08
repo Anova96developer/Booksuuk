@@ -3,6 +3,7 @@
 from cmath import log
 from distutils.log import Log
 import email
+from multiprocessing import context
 from urllib import request
 from django.shortcuts import render
 from rest_framework import generics
@@ -15,7 +16,7 @@ from django.conf import settings
 from django.shortcuts import render,get_object_or_404
 from .serializers import UserAccountVerificationSerializer,loginSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from drf_yasg.utils import swagger_auto_schema
 from django.contrib.auth import get_user_model
 User=get_user_model()
 
@@ -24,14 +25,15 @@ User=get_user_model()
 
 class HelloAuthView(generics.GenericAPIView):
         
-   
+    
+    @swagger_auto_schema(operation_summary="Hello Auth")
     def get(self,request):
         return Response(data={"message":"Hello Auth"},status=status.HTTP_200_OK)
 
 class UserCreateView(generics.GenericAPIView):
     serializer_class = serializers.UserCreationSerializer
     
-    
+    @swagger_auto_schema(operation_summary="Register User")
     def post(self,request):
 
         token = secrets.token_hex(30)
@@ -42,7 +44,7 @@ class UserCreateView(generics.GenericAPIView):
          
         
         
-        serializer  = self.serializer_class(data=data)
+        serializer  = self.serializer_class(data=data,context={'token':token})
         
         username = data['username']
         reciever_email = data['email']
@@ -68,7 +70,8 @@ class UserCreateView(generics.GenericAPIView):
 
 class AccountVerificationView(generics.GenericAPIView):  
     serializer_class= UserAccountVerificationSerializer
-
+    
+    @swagger_auto_schema(operation_summary="Activate Account")
     def  put (self,request):
         user  = get_object_or_404(User,email = request.data['email'])
        
@@ -97,7 +100,8 @@ class loginView(generics.GenericAPIView):
         'refresh': str(refresh),
         'access': str(refresh.access_token),
     }
-
+    
+    @swagger_auto_schema(operation_summary="login User")
     def post (self,request):
           user  = get_object_or_404(User,email = request.data['email'])
          
