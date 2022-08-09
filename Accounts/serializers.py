@@ -1,4 +1,5 @@
 
+import secrets
 from  Accounts.models import User
 from rest_framework import serializers
 from phonenumber_field.serializerfields import PhoneNumberField
@@ -12,14 +13,15 @@ class UserCreationSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(max_length=60,allow_null=False,allow_blank=False)
     address = serializers.CharField(max_length=150,allow_null=False,allow_blank=False)
 
-    #token and is_verified are filled in dynamically and is _verified =false by 
     password  = serializers.CharField(min_length = 8,write_only=True,allow_blank=False)
    
     
     class Meta:
         model= User
         fields =['username','email','password','first_name','last_name','address','phone_number','token','is_verified','date_joined']
-        read_only_fields= ['token','is_verified','date_joined']
+        read_only_fields= ['is_verified','date_joined','token',]
+
+
     
     
     
@@ -49,9 +51,13 @@ class UserCreationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
 
         password = validated_data.pop('password')
+        token = secrets.token_hex(30)
+
+        validated_data['token'] = token
 
         user =  super().create(validated_data)
-            
+
+
 
         user.set_password(password)  
             
@@ -62,11 +68,13 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
 
 class UserAccountVerificationSerializer(serializers.ModelSerializer):
-    password  = serializers.CharField(min_length = 8,write_only=True)
+    
 
     class Meta:
           model= User
-          fields =['username','email','password','token','is_verified']
+          fields =['username','email','token','is_verified']
+          read_only_fields = ['username','is_verified']
+
 
 
 class loginSerializer(serializers.ModelSerializer):
@@ -74,6 +82,8 @@ class loginSerializer(serializers.ModelSerializer):
     class Meta:
         model= User
         fields =['username','password','email','is_verified']
+        read_only_fields = ['is_verified','username']
+
     
 
 

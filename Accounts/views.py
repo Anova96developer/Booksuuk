@@ -23,12 +23,19 @@ User=get_user_model()
 
 # Create your views here.
 
-class HelloAuthView(generics.GenericAPIView):
-        
+class AllUsers(generics.GenericAPIView):
+    serializer_class = serializers.UserCreationSerializer
     
-    @swagger_auto_schema(operation_summary="Hello Auth")
+    @swagger_auto_schema(operation_summary="get all Users")
     def get(self,request):
-        return Response(data={"message":"Hello Auth"},status=status.HTTP_200_OK)
+
+          users = User.objects.all()
+          serializer = self.serializer_class(instance=users,many=True)
+        
+          return Response(data=serializer.data,status= status.HTTP_201_CREATED  )
+        
+       
+
 
 class UserCreateView(generics.GenericAPIView):
     serializer_class = serializers.UserCreationSerializer
@@ -36,25 +43,27 @@ class UserCreateView(generics.GenericAPIView):
     @swagger_auto_schema(operation_summary="Register User")
     def post(self,request):
 
-        token = secrets.token_hex(30)
+        
 
-        request.data.update({'token':token})
 
         data = request.data
-         
         
-        
-        serializer  = self.serializer_class(data=data,context={'token':token})
+     
+        serializer  = self.serializer_class(data=data)
         
         username = data['username']
         reciever_email = data['email']
 
 
-        body  = f'Hi {username},\n You are seeing this message because you registered for Ebookify . Copy the code code below to verify your account   \n {token}'   
-
+         
+        
         if serializer.is_valid():
+
             serializer.save()
 
+            token =serializer.data['token']
+
+            body  = f'Hi {username},\n You are seeing this message because you registered for Ebookify . Copy the code code below to verify your account   \n {token}'  
 
             send_mail(
            'Confirmation code for account verification',
