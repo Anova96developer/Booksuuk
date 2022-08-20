@@ -9,6 +9,6 @@ class BookSerializers(serializers.ModelSerializer):
   class Meta:
     model = Book
     fields = "__all__"
-    ordering = ["-date_created"]
-    order_by =  ["date_created","date_modified"] 
+    
+    
      

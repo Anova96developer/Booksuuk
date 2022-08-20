@@ -1,6 +1,6 @@
 
 
-from cmath import log
+
 from distutils.log import Log
 import email
 from multiprocessing import context
@@ -14,9 +14,11 @@ import secrets
 from django.core.mail import send_mail # for email
 from django.conf import settings
 from django.shortcuts import render,get_object_or_404
-from .serializers import UserAccountVerificationSerializer,loginSerializer
+from .serializers import UserAccountVerificationSerializer, UserCreationSerializer,loginSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
+# from drf_yasg.utils import swagger_auto_schema
 from django.contrib.auth import get_user_model
 User=get_user_model()
 
@@ -26,7 +28,11 @@ User=get_user_model()
 class AllUsers(generics.GenericAPIView):
     serializer_class = serializers.UserCreationSerializer
     
-    @swagger_auto_schema(operation_summary="get all Users")
+   
+    @extend_schema(
+        request= UserCreationSerializer,
+        responses={201: UserCreationSerializer},
+    )
     def get(self,request):
 
           users = User.objects.all()
@@ -40,7 +46,10 @@ class AllUsers(generics.GenericAPIView):
 class UserCreateView(generics.GenericAPIView):
     serializer_class = serializers.UserCreationSerializer
     
-    @swagger_auto_schema(operation_summary="Register User")
+    @extend_schema(
+        request= UserCreationSerializer,
+        responses={201: UserCreationSerializer},
+    )
     def post(self,request):
 
         
@@ -80,7 +89,10 @@ class UserCreateView(generics.GenericAPIView):
 class AccountVerificationView(generics.GenericAPIView):  
     serializer_class= UserAccountVerificationSerializer
     
-    @swagger_auto_schema(operation_summary="Activate Account")
+    @extend_schema(
+        request= UserAccountVerificationSerializer,
+        responses={201: UserAccountVerificationSerializer},
+    )
     def  put (self,request):
         user  = get_object_or_404(User,email = request.data['email'])
        
@@ -110,7 +122,10 @@ class loginView(generics.GenericAPIView):
         'access': str(refresh.access_token),
     }
     
-    @swagger_auto_schema(operation_summary="login User")
+    @extend_schema(
+        request= loginSerializer,
+        responses={201: loginSerializer},
+    )
     def post (self,request):
           user  = get_object_or_404(User,email = request.data['email'])
          

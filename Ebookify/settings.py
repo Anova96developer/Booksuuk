@@ -36,7 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Accounts',
     'rest_framework',
-    'drf_yasg',
+    # 'drf_yasg',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     'phonenumber_field',
     'rest_framework_simplejwt',
     'books',
@@ -82,7 +84,26 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': False,
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Ebookify',
+    'DESCRIPTION': 'E-commerce app for books selling',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+    # OTHER SETTINGS
+}
 
 
 
@@ -103,14 +124,7 @@ TEMPLATES = [
 ]
 
 
-REST_FRAMEWORK = {
-   
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
 
-}
 
 WSGI_APPLICATION = 'Ebookify.wsgi.application'
 
