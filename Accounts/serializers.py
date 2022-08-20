@@ -81,7 +81,7 @@ class loginSerializer(serializers.ModelSerializer):
     password  = serializers.CharField(min_length = 8,write_only=True)
     class Meta:
         model= User
-        fields =['username','password','email','is_verified']
+        fields =['username','email','password','is_verified']
         read_only_fields = ['is_verified','username']
 
     
