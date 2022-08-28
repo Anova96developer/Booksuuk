@@ -4,6 +4,7 @@ from rest_framework import routers
 from . import views
 
 
+app_name = "books"
 router  = routers.DefaultRouter()
 
 router.register('',viewset=views.BooksViewSets)
