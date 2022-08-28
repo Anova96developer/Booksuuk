@@ -1,11 +1,12 @@
 
 import secrets
-from  Accounts.models import User
+from  account.models import User
 from rest_framework import serializers
 from phonenumber_field.serializerfields import PhoneNumberField
 
 
 class UserCreationSerializer(serializers.ModelSerializer):
+
     username=serializers.CharField(max_length=40,allow_blank=False)
     email=serializers.EmailField(max_length=80,allow_blank=False)
     phone_number=PhoneNumberField(allow_null=False,allow_blank=False)
@@ -18,8 +19,8 @@ class UserCreationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model= User
-        fields =['username','email','password','first_name','last_name','address','phone_number','token','is_verified','date_joined']
-        read_only_fields= ['is_verified','date_joined','token',]
+        fields =['id','username','email','password','first_name','last_name','address','phone_number','token','is_verified','date_joined']
+        read_only_fields= ['id','is_verified','date_joined','token',]
 
 
     

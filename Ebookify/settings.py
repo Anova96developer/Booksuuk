@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Accounts',
+    'account',
     'rest_framework',
     # 'drf_yasg',
     'drf_spectacular',
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'books',
     'cloudinary',
+    
     
 ]
 
@@ -64,7 +65,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Ebookify.urls'
 
-AUTH_USER_MODEL ='Accounts.User'
+AUTH_USER_MODEL ='account.User'
 
 
 CLOUDINARY_STORAGE = {
@@ -90,11 +91,16 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+#     'DEFAULT_PERMISSION_CLASSES': [
+#    'rest_framework.permissions.IsAuthenticated',
+# ]
+
 
 }
 
 SPECTACULAR_SETTINGS = {
+    'SCHEMA_PATH_PREFIX': r"/api/v1",
     'TITLE': 'Ebookify',
     'DESCRIPTION': 'E-commerce app for books selling',
     'VERSION': '1.0.0',

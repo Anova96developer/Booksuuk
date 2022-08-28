@@ -1,12 +1,13 @@
 
-from ast import mod
-from email.headerregistry import Address
-from lib2to3.pgen2 import token
-from pyexpat import model
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+import uuid
+
+
+def get_random_id (self):
+    return 
 
 
 class CustomUserManager(BaseUserManager):
@@ -45,6 +46,7 @@ class CustomUserManager(BaseUserManager):
   
   
 class User(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username =models.CharField(max_length=25,unique=True)
     email = models.EmailField(max_length=80,unique=True)
     token = models.CharField(max_length=60,unique=True)
