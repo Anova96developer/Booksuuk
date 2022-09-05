@@ -3,6 +3,7 @@
 
 
 from asyncio import FastChildWatcher
+from gc import get_objects
 from requests import request
 from rest_framework import generics
 from rest_framework.response import Response
@@ -21,7 +22,7 @@ from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
 User=get_user_model()
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 
 
 
@@ -45,14 +46,12 @@ class AuthViewSets(viewsets.ModelViewSet):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
+    permission_classes =[AllowAny]
     http_method_names = ["get", "post", "patch", "delete", "put"]
     filterset_fields = ["is_active"]
     search_fields = ["email","username", "first_name", "last_name", "phone_number"]
     ordering_fields = ["-date_joined"]
 
-
-
-    #add permissions here
 
 
 
@@ -64,6 +63,16 @@ class AuthViewSets(viewsets.ModelViewSet):
         elif self.action  == "create":
             return UserCreationSerializer
         return super().get_serializer_class()
+
+    
+    def paginate_results(self, queryset):
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 
 
@@ -145,8 +154,11 @@ class AuthViewSets(viewsets.ModelViewSet):
         'refresh': str(refresh),
         'access': str(refresh.access_token),
        }
-      
-        user  = get_object_or_404(User,email = request.data['email'])
+        
+        user  = User.objects.all().filter(email = request.data['email']).first()
+        if (not user):
+            return  Response(data={'message':'Authentication Failed'},status=  status.HTTP_401_UNAUTHORIZED)   
+        
          
 
 

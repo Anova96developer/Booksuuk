@@ -3,20 +3,14 @@ from pyexpat import model
 from random import choices
 from secrets import choice
 from django.db import models
+from Ebookify.enums import BOOK_CATEGORY
 import uuid
 
 from django.forms import CharField
 
 
 class Book  (models.Model):
-   BOOK_CATEGORY = (
-           ('ROMANCE','romance'),
-           ('FICTION','fiction'),
-           ('DRAMA','drama'),
-           ('POLITICS','politics'),
-           ('CRIME','crime'),
-          
-             )
+   
 
    book_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
    title =  models.CharField(max_length=225,null = False, blank= False)
