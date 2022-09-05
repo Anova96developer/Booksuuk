@@ -36,13 +36,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'account',
     'rest_framework',
-    # 'drf_yasg',
+    'orders',
     'drf_spectacular',
     'drf_spectacular_sidecar',
     'phonenumber_field',
     'rest_framework_simplejwt',
     'books',
     'cloudinary',
+    
     
     
 ]
@@ -92,10 +93,11 @@ REST_FRAMEWORK = {
         
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-#     'DEFAULT_PERMISSION_CLASSES': [
-#    'rest_framework.permissions.IsAuthenticated',
-# ]
-
+    'DEFAULT_PERMISSION_CLASSES': [
+   'rest_framework.permissions.IsAuthenticated',
+],
+     'DEFAULT_PAGINATION_CLASS': 'Ebookify.pagination.CustomPagination',
+    'PAGE_SIZE': 100
 
 }
 
@@ -177,6 +179,21 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+DATE_INPUT_FORMATS = [
+    "%d/%m/%Y",
+    "%d/%m/%y",  # '10/02/2020', '10/02/20'
+    "%Y-%m-%d",
+    "%m/%d/%Y",
+    "%m/%d/%y",  # '2006-10-25', '10/25/2006', '10/25/06'
+    "%b %d %Y",
+    "%b %d, %Y",  # 'Oct 25 2006', 'Oct 25, 2006'
+    "%d %b %Y",
+    "%d %b, %Y",  # '25 Oct 2006', '25 Oct, 2006'
+    "%B %d %Y",
+    "%B %d, %Y",  # 'October 25 2006', 'October 25, 2006'
+    "%d %B %Y",
+    "%d %B, %Y",  # '25 October 2006', '25 October, 2006'
+]
 
 
 # Static files (CSS, JavaScript, Images)

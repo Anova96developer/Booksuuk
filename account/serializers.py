@@ -1,4 +1,5 @@
 
+import email
 import secrets
 from  account.models import User
 from rest_framework import serializers
@@ -61,7 +62,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
 
         user.set_password(password)  
-            
+    
         
         user.save()
         

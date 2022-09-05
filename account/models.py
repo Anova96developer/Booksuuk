@@ -6,8 +6,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 import uuid
 
 
-def get_random_id (self):
-    return 
 
 
 class CustomUserManager(BaseUserManager):
