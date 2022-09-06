@@ -90,23 +90,6 @@ class OrderViewSets(viewsets.ModelViewSet):
 
 
 
-# #   # def  list(self,request,*args, **kwargs):
-# #   # queryset = Order.objects.select_relateted("book_Id").order_by("-date_created")
-# #   #   # book = Book.objects.get_object_or_404(book_id = request.data["book_Id"])
-# #   #   # book_category = book.objects.values("book_category")
-# #   #   serializer  = self.serializer_class(queryset,many =True)
-# #   #   return Response(
-# #   #               {"success": True, "data": serializer.data}, status=status.HTTP_200_OK
-# #   #           )
-
-# #   # def  retrieve (self,request,pk=None ,*args, **kwargs):
-# #   #   queryset = Order.objects.all().order_by("-date_created")
-# #   #   book = Book.objects.get_object_or_404(book_id = request.data["book_Id"])
-# #   #   book_category = book.objects.values("book_category")
-# #   #   serializer  = self.serializer_class(queryset,context ={"book_category":book_category},many =True)
-# #   #   return Response(
-# #   #               {"success": True, "data": serializer.data}, status=status.HTTP_200_OK
-# #   #           )
 
 
 
@@ -117,15 +100,6 @@ class OrderViewSets(viewsets.ModelViewSet):
 
   
 
-# #   # @action(
-# #   #   methods=["GET"],
-# #   #   serializer_class = Single_Customer_Serializers,
-# #   #   url_path="single-customer-orders/<int:customer_Id>",
-# #   #   url_name="single_customer_orders",
-# #   #   detail=True,
-
-# #   # )
-# #   # def single_customer_orders(self,request,*args, **kwargs):
 
 
 
