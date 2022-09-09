@@ -15,7 +15,7 @@ from account import serializers
 from account.models import User
 from django.contrib.auth import get_user_model
 from books.models import Book
-from orders.serializers import AllOrdersSerializer
+from orders.serializers import AllOrdersSerializer, UpdateOrderStatus
 from .models import Order
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated,AllowAny
@@ -71,10 +71,29 @@ class AllOrderViewSets(viewsets.ModelViewSet):
   def  single_customer_orders (self,request,*args, **kwargs):
     """This end points get all the orders made by a single customer"""
 
-    print(self.user)
     queryset = Order.objects.all().filter(user=request.user.id)
     serializer =AllOrdersSerializer(queryset,many=True)
     return Response(data={'success':True,"data":serializer.data},status=status.HTTP_200_OK)
+
+
+  @action(
+    methods=["POST"],
+    detail=True,
+    url_path="update-order-status",
+    permission_classes = [IsAuthenticated],
+    serializer_class = UpdateOrderStatus,
+    url_name="update_order_status"
+  )  
+  def  update_order_status(self,request,*args, **kwargs):
+    order = self.get_object()
+
+    serializer = UpdateOrderStatus(data=request.data)
+    if serializer.is_valid():
+      order.order_status = serializer.data['order_status']
+      order.save()
+      return Response(data={'success':True,"data":serializer.data},status=status.HTTP_200_OK)
+
+
 
 
 
