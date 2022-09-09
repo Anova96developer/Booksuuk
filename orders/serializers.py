@@ -43,6 +43,15 @@ class AllOrdersSerializer(serializers.ModelSerializer):
     order.save()
     return order
 
+class  UpdateOrderStatus (serializers.ModelSerializer):
+  
+  
+  class Meta :
+    model = Order
+    fields = ["order_status","order_Id"]
+    
+   
+    
 
 
 
