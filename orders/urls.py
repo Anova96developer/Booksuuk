@@ -7,7 +7,7 @@ from . import views
 app_name = "orders"
 router  = routers.DefaultRouter()
 
-router.register('',viewset=views.OrderViewSets)
+router.register('',viewset=views.AllOrderViewSets)
 
 urlpatterns = [
     path ('',include(router.urls))
