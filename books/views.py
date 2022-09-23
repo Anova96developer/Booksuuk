@@ -1,10 +1,8 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from django.shortcuts import render
-from httplib2 import Response
+
 from rest_framework import viewsets,filters
 from rest_framework.response import Response
 from .serializers import BookSerializers
-# from drf_yasg.utils import swagger_auto_schema
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from rest_framework.permissions import IsAuthenticated
 from .models import Book
