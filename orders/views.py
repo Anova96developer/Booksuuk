@@ -1,8 +1,6 @@
-from importlib.resources import path
-from multiprocessing import context
-from tkinter import Entry
+
 import uuid
-from cairo import Status
+
 from django import views
 from django.shortcuts import render
 from requests import request

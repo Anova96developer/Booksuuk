@@ -1,4 +1,4 @@
-#!/home/sanusi/Desktop/Ebookify/venv/bin/python3
+#!/home/sanusi/Desktop/ABUBAKR/SanusiBackup/Tech/Road_to_backend/Django_Rest_Framework/django_project/Ebookify/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
