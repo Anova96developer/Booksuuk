@@ -8,6 +8,7 @@
  - Token is sent to registered user's email using MailTrap
  - verification/confirmation of account
  - User selects book with respect to category
+ - image manipulations with cloudinary
  - user add orders
  - payment is made bby users(front-end handles the payment gateway)
  - admin update the  delivery details  based on payment
