@@ -2,7 +2,7 @@
 
 ## Online e-commerce Book Store  Rest Api written with django_rest framework 
 
-### Features:
+### Features with (Test-driven development):
 
  - User Registers an new account
  - Token is sent to registered user's email using MailTrap
