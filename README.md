@@ -1,6 +1,6 @@
 # Ebookify
 
-## Online e-commerce Book Store  Rest Api written with django_rest framework 
+## Online  Book Store  Rest Api written with django_rest framework 
 
 ### Features with (Test-driven development):
 
