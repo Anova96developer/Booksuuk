@@ -1,8 +1,6 @@
-from urllib import response
-from click import password_option
-from django.urls import reverse, path, include
+from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase, URLPatternsTestCase
+from rest_framework.test import APITestCase
 
 from .models import User
 

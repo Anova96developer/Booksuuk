@@ -1,22 +1,13 @@
-from asyncio import FastChildWatcher
-from gc import get_objects
-from requests import request
-from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status, filters, viewsets
-from . import serializers
-import secrets
 from django.core.mail import send_mail  # for email
-from django.conf import settings
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from .serializers import (
     UserAccountVerificationSerializer,
     UserCreationSerializer,
     loginSerializer,
 )
 from rest_framework_simplejwt.tokens import RefreshToken
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-from drf_spectacular.types import OpenApiTypes
 
 # from drf_yasg.utils import swagger_auto_schema
 from django.contrib.auth import get_user_model
@@ -24,7 +15,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 User = get_user_model()
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny
 
 
 class AuthViewSets(viewsets.ModelViewSet):

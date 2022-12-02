@@ -1,15 +1,12 @@
-from django.urls import path,include
+from django.urls import path, include
 
 from rest_framework import routers
-from . import views
+from .views import BooksViewSets
 
 
 app_name = "books"
-router  = routers.DefaultRouter()
+router = routers.DefaultRouter()
 
-router.register('',viewset=views.BooksViewSets)
+router.register("", viewset=BooksViewSets)
 
-urlpatterns = [
-    path ('',include(router.urls))
-]
-
+urlpatterns = [path("", include(router.urls))]
