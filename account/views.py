@@ -9,13 +9,13 @@ from .serializers import (
 )
 from rest_framework_simplejwt.tokens import RefreshToken
 
-# from drf_yasg.utils import swagger_auto_schema
+
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
 
 User = get_user_model()
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 
 
 class AuthViewSets(viewsets.ModelViewSet):
@@ -29,11 +29,18 @@ class AuthViewSets(viewsets.ModelViewSet):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    permission_classes = [AllowAny]
-    http_method_names = ["get", "post", "patch", "delete", "put"]
+
+    http_method_names = ["get", "post", "delete", "patch", "put"]
     filterset_fields = ["is_active"]
     search_fields = ["email", "username", "first_name", "last_name", "phone_number"]
     ordering_fields = ["-date_joined"]
+
+    def get_permissions(self):
+        if self.action == "destroy":
+            self.permission_classes = [IsAdminUser]
+        else:
+            self.permission_classes = [AllowAny]
+        return super().get_permissions()
 
     def get_serializer_class(self):
         if self.action == "activate_account":
