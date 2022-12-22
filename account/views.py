@@ -1,6 +1,5 @@
 from rest_framework.response import Response
 from rest_framework import status, filters, viewsets
-from django.core.mail import send_mail  # for email
 from django.shortcuts import get_object_or_404
 from .serializers import (
     UserAccountVerificationSerializer,
@@ -12,6 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
+from .tasks import send_email_task
 
 User = get_user_model()
 from rest_framework.decorators import action
@@ -71,16 +71,7 @@ class AuthViewSets(viewsets.ModelViewSet):
             serializer.save()
 
             token = serializer.data["token"]
-
-            body = f"Hi {username},\n You are seeing this message because you registered for Ebookify . Copy the code code below to verify your account   \n {token}"
-
-            send_mail(
-                "Confirmation code for account verification",
-                body,
-                "Ebookify.app.com",
-                [reciever_email],
-                fail_silently=False,
-            )
+            send_email_task.delay(username, token, reciever_email)
 
             return Response(
                 {

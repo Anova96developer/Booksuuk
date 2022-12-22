@@ -1,6 +1,6 @@
 from pathlib import Path
-from decouple import config
 from datetime import timedelta
+from decouple import config
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -208,3 +208,18 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# celery
+
+CELERY_BROKER_URL = os.environ.get(
+    "CELERY_BROKER_URL",
+    "redis://default:5hMCy2n1mCwpsoRowDzS@containers-us-west-88.railway.app:6476",
+)
+CELERY_RESULT_BACKEND = os.environ.get(
+    "CELERY_BROKER_URL",
+    "redis://default:5hMCy2n1mCwpsoRowDzS@containers-us-west-88.railway.app:6476",
+)
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = TIME_ZONE
